@@ -129,6 +129,25 @@ describe('Password Expiry Trait', function () {
         expect($passwordExpiringDate->isSameDay($expectedExpirationDate))->toBeTrue();
     });
 
+    it('should clear a password', function () {
+        $model = new TestModelWithTrait;
+        $model->password = 'password';
+        $model->id = 1;
+        $model->save();
+
+        expect($model->password_expires_at)->not->toBeNull();
+
+        $passwordChangelog = $model->passwordChangelog;
+        $passwordChangelog->expires_at = now()->subDays(9);
+        $passwordChangelog->save();
+
+        $model->tryClearPassword();
+
+        $model->refresh();
+
+        expect($model->password_expires_at)->toBeNull();
+    });
+
     it('should create a password changelog on model creation', function () {
         $model = new TestModelWithTrait;
         $model->password = 'password';

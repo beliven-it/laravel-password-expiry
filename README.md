@@ -97,6 +97,15 @@ $user->password_expires_at;
 
 ```
 
+The trait also provides a method to attempt to clear the password if expired.
+
+```php
+<?php
+
+$user->tryClearPassword();
+
+```
+
 If the user doesn't have a password expired nothing will happen.
 
 ### Commands

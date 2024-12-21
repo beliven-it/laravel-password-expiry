@@ -14,6 +14,11 @@ trait HasPasswordExpiration
         return $this->morphOne(PasswordChangelog::class, 'model');
     }
 
+    public function tryClearPassword(): void
+    {
+        PasswordExpiry::tryClearPassword($this);
+    }
+
     public function getPasswordExpiresAtAttribute(): ?Carbon
     {
         return $this->passwordChangelog?->expires_at ?? null;
