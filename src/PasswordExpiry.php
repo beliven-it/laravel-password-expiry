@@ -3,7 +3,7 @@
 namespace Beliven\PasswordExpiry;
 
 use Beliven\PasswordExpiry\Events\PasswordExpired;
-use Beliven\PasswordExpiry\Events\UpcomingPasswordExpiration;
+use Beliven\PasswordExpiry\Events\PasswordExpiring;
 use Beliven\PasswordExpiry\Models\PasswordChangelog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -86,7 +86,7 @@ class PasswordExpiry
             ->upcomingExpiration()
             ->chunkById(100, function ($passwordChangelogs) {
                 foreach ($passwordChangelogs as $passwordChangelog) {
-                    UpcomingPasswordExpiration::dispatch($passwordChangelog->model);
+                    PasswordExpiring::dispatch($passwordChangelog->model);
                 }
             });
     }

@@ -18,7 +18,6 @@ class PasswordExpiryServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-password-expiry')
             ->hasConfigFile()
-            ->hasViews()
             ->hasMigration('create_model_password_changes')
             ->hasCommand(PasswordExpirationCheckCommand::class);
     }

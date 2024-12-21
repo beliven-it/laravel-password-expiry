@@ -3,7 +3,7 @@
 namespace Beliven\PasswordExpiry\Tests;
 
 use Beliven\PasswordExpiry\Events\PasswordExpired;
-use Beliven\PasswordExpiry\Events\UpcomingPasswordExpiration;
+use Beliven\PasswordExpiry\Events\PasswordExpiring;
 use Beliven\PasswordExpiry\Facades\PasswordExpiry as PasswordExpiryFacade;
 use Beliven\PasswordExpiry\Models\PasswordChangelog;
 use Beliven\PasswordExpiry\PasswordExpiry;
@@ -115,6 +115,20 @@ describe('Password Expiry Model', function () {
 });
 
 describe('Password Expiry Trait', function () {
+    it('should return the password expiring date', function () {
+        $model = new TestModelWithTrait;
+        $model->password = 'password';
+        $model->id = 1;
+        $model->save();
+
+        $passwordExpiringDate = $model->password_expires_at;
+
+        $expectedExpirationDate = now()
+            ->addDays(config('password-expiry.days_to_expire'));
+
+        expect($passwordExpiringDate->isSameDay($expectedExpirationDate))->toBeTrue();
+    });
+
     it('should create a password changelog on model creation', function () {
         $model = new TestModelWithTrait;
         $model->password = 'password';
@@ -239,7 +253,7 @@ describe('Password Expiry Methods', function () {
         Event::fake();
         $this->passwordExpiry->checkPasswords();
 
-        Event::assertDispatchedTimes(UpcomingPasswordExpiration::class, 2);
+        Event::assertDispatchedTimes(PasswordExpiring::class, 2);
         Event::assertDispatchedTimes(PasswordExpired::class, 0);
     });
 
@@ -262,7 +276,7 @@ describe('Password Expiry Methods', function () {
         Event::fake();
         $this->passwordExpiry->checkPasswords();
 
-        Event::assertDispatchedTimes(UpcomingPasswordExpiration::class, 0);
+        Event::assertDispatchedTimes(PasswordExpiring::class, 0);
         Event::assertDispatchedTimes(PasswordExpired::class, 1);
     });
 });
