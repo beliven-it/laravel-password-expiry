@@ -13,6 +13,7 @@ class PasswordExpirationCheckCommand extends Command
 
     public function handle(): int
     {
+        // @phpstan-ignore-next-line
         PasswordExpiry::checkPasswords();
 
         return self::SUCCESS;

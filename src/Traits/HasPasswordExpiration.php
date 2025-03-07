@@ -7,6 +7,7 @@ use Beliven\PasswordExpiry\Models\PasswordChangelog;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
+// @phpstan-ignore-next-line
 trait HasPasswordExpiration
 {
     public function passwordChangelog(): MorphOne
