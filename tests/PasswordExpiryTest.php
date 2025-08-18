@@ -298,4 +298,28 @@ describe('Password Expiry Methods', function () {
         Event::assertDispatchedTimes(PasswordExpiring::class, 0);
         Event::assertDispatchedTimes(PasswordExpired::class, 1);
     });
+
+    it('deletes the password changelog if the associated model does not exist anymore', function () {
+        // Arrange: Crea il modello associato
+        $model = new TestModel;
+        $model->save();
+
+        // Crea il PasswordChangelog associato (occorre che sia expired se hai scopes)
+        $passwordChangelog = new PasswordChangelog;
+        $passwordChangelog->expires_at = '2020-02-12 10:20:00';
+        $passwordChangelog->model()->associate($model);
+        $passwordChangelog->save();
+
+        // Carica la relazione
+        $passwordChangelog->load('model');
+
+        // Elimina l'entità associata DOPO il caricamento ma PRIMA dell'esecuzione del service
+        $model->delete();
+
+        // Act: esegui il metodo che vuoi testare
+        app(PasswordExpiry::class)->checkPasswords();
+
+        // Assert: verifica che il changelog sia stato cancellato
+        expect(PasswordChangelog::find($passwordChangelog->id))->toBeNull();
+    });
 });

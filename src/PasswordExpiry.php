@@ -55,8 +55,11 @@ class PasswordExpiry
         DB::transaction(function () use ($passwordChangelog) {
             $model = $passwordChangelog->model;
 
-            // If the model does't exist, we can't clear the password
+            // If the model does't exist anymore, we can't clear the password
+            // so we just delete the changelog entry.
             if (is_null($model)) {
+                $passwordChangelog->delete();
+
                 return;
             }
 
