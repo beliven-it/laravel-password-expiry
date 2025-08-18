@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-password-expiry` will be documented in this file.
 
+## 1.2.1 - 2025-08-18
+
+### What's Changed
+
+* chore(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/beliven-it/laravel-password-expiry/pull/3
+* chore(deps): bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/beliven-it/laravel-password-expiry/pull/5
+* fix: handle password entries with null models
+
 ## 1.2.0 - 2025-03-07
 
 ### What's Changed
