@@ -2,6 +2,7 @@
 
 namespace Beliven\PasswordExpiry\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -10,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $id
  * @property string $model_type
  * @property int $model_id
- * @property \Carbon\Carbon $expires_at
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property Carbon $expires_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class PasswordChangelog extends Model
 {
