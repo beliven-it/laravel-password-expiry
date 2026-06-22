@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-password-expiry` will be documented in this file.
 
+## 1.3.0 - 2026-06-22
+
+### Features
+
+- Add support for Laravel 13
+- Add support for PHP 8.5
+
+### What's Changed
+
+- ci: fix the `prefer-lowest` matrix for Laravel 11 by raising the `orchestra/testbench` floor to `^9.5`
+- ci: run the full matrix with `fail-fast: false`
+
+**Full Changelog**: https://github.com/beliven-it/laravel-password-expiry/compare/1.2.1...1.3.0
+
 ## 1.2.1 - 2025-08-18
 
 ### What's Changed
