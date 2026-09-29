@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-password-expiry` will be documented in this file.
 
+## 1.3.1 - 2026-09-29
+
+### Bug Fixes
+
+- Skip `PasswordExpiring` notifications for changelog entries whose model cannot be resolved, instead of throwing a `TypeError` that aborted `password-expiry:check` (#13)
+
+**Full Changelog**: https://github.com/beliven-it/laravel-password-expiry/compare/1.3.0...1.3.1
+
 ## 1.3.0 - 2026-06-22
 
 ### Features
