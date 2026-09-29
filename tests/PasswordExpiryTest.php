@@ -322,4 +322,31 @@ describe('Password Expiry Methods', function () {
         // Assert: verifica che il changelog sia stato cancellato
         expect(PasswordChangelog::find($passwordChangelog->id))->toBeNull();
     });
+
+    it('skips upcoming expirations whose associated model cannot be resolved', function () {
+        $days = config('password-expiry.days_to_notify_expiration');
+
+        $orphan = new TestModel;
+        $orphan->id = 1;
+        $orphan->save();
+
+        $model = new TestModel;
+        $model->id = 2;
+        $model->save();
+
+        foreach ([$orphan, $model] as $item) {
+            $passwordChangelog = new PasswordChangelog;
+            $passwordChangelog->expires_at = now()->addDays($days);
+            $passwordChangelog->model()->associate($item);
+            $passwordChangelog->save();
+        }
+
+        $orphan->delete();
+
+        Event::fake();
+        $this->passwordExpiry->checkPasswords();
+
+        Event::assertDispatchedTimes(PasswordExpiring::class, 1);
+        Event::assertDispatched(PasswordExpiring::class, fn ($event) => $event->model->is($model));
+    });
 });

@@ -94,6 +94,11 @@ class PasswordExpiry
             ->upcomingExpiration()
             ->chunkById(100, function ($passwordChangelogs) {
                 foreach ($passwordChangelogs as $passwordChangelog) {
+                    // Orphaned entries are left to expirePasswords(), which removes them once expired.
+                    if (is_null($passwordChangelog->model)) {
+                        continue;
+                    }
+
                     PasswordExpiring::dispatch($passwordChangelog->model);
                 }
             });
